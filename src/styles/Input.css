@@ -1,0 +1,27 @@
+input {
+    transition: width 0.6s;
+    outline: none;
+    border: none;
+    margin-bottom: 5vh;
+    border-radius: 5px;
+}
+
+input:focus,
+input:hover {
+    border: none;
+    outline: none;
+    background: rgb(216, 243, 200);
+}
+
+textarea {
+    width: 96%;
+    padding: 1vh 1vh 10vh;
+    outline: none;
+    border: none;
+
+}
+
+textarea:focus,
+textarea:hover {
+    background: rgb(222, 255, 202);
+}

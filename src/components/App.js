@@ -4,7 +4,7 @@ import FinishedTasksList from './FinishedTasksList';
 import Input from './Input';
 import ToDoList from './ToDoList';
 
-import '../styles/App.css';
+import '../styles/App.scss';
 import { AppContext } from './AppContext';
 
 const App = () => {
@@ -32,7 +32,7 @@ const App = () => {
     setActualDate(actualDate)
     setRangeDate(rangeDate)
 
-  }, [taskBody])
+  }, [taskBody, tasks])
 
   const handleInputChange = e => {
     if (e.target.name === 'task') {

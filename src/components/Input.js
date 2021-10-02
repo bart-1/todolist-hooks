@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { AppContext } from "./AppContext";
 
+import '../styles/Input.css';
+
 const Input = props => {
     const { actualDate } = useContext(AppContext);
     return (

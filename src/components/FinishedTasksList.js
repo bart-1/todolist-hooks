@@ -2,6 +2,8 @@ import React, {useContext} from 'react';
 import { AppContext } from './AppContext';
 import Task from './Task';
 
+import '../styles/FinishedTasksList.css';
+
 const FinishedTasksList = () => {
     const { tasks } = useContext(AppContext);
     const finishedTasks = tasks.filter(task => task.status === false);

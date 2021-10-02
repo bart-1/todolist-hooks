@@ -1,0 +1,4 @@
+table[id="done"],
+#done>caption {
+    filter: grayscale(1);
+}
