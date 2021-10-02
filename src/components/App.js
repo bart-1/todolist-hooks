@@ -1,52 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import FinishedTasksList from './FinishedTasksList';
 import Input from './Input';
+import ToDoList from './ToDoList';
+
 import '../styles/App.css';
-
-
-// let tasksArr = [];
 
 const App = () => {
 
-
-  // const [tasks, setTasks] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [taskId, setTaskId] = useState(0);
-  const [taskDate, setTaskDate] = useState('');
+  const [actualDate, setActualDate] = useState('');
+  const [rangeDate, setRangeDate] = useState('');
   const [taskBody, setTaskBody] = useState('');
-  // const [taskStatus, setTaskStatus] = useState(true)
 
+  useEffect(() => {
+    function getDate(addYears) {
+      const now = Date.now();
+      const time = new Date(now);
+      return (
+        time.getUTCFullYear() + addYears + '-'
+        + ('0' + (time.getMonth() + 1)).slice(-2) + '-'
+        + ('0' + (time.getDay() - 4)).slice(-2) + 'T'
+        + ('0' + time.getHours()).slice(-2) + ':'
+        + ('0' + time.getMinutes()).slice(-2)
+      );
+    }
+    const actualDate = getDate(0);
+    const rangeDate = getDate(2);
+    console.log(actualDate)
+    setActualDate(actualDate)
+    setRangeDate(rangeDate)
+
+  }, [taskBody])
 
   const handleInputChange = e => {
-
     if (e.target.name === 'task') {
-
       setTaskBody(e.target.value)
     } else if (e.target.name === 'date') {
-
-      setTaskDate(e.target.value)
-
+      setActualDate(e.target.value)
     }
   }
 
   const handleInputSubmit = e => {
     e.preventDefault();
-    setTaskId(tasks.length + 1)
-    setTasks(task => task.concat(
-      {
-        id: taskId,
-        date: taskDate,
-        body: taskBody,
-        status: true
-      }))
-    setTaskDate('');
+    setTasks(task => task.concat({
+      id: tasks.length + 1,
+      date: actualDate,
+      body: taskBody,
+      status: true
+    }))
+    setActualDate('');
     setTaskBody('');
-
   }
 
-  const handleTaskStatus = (id) => (
+  const handleTaskStatus = id => (
     setTasks(tasks.map(task => {
       if (task.id === id) {
-        task = { id: task.id, date: task.date, body: task.body, status: false };
+        task = {
+          id: task.id,
+          date: task.date,
+          body: task.body,
+          status: false
+        };
       }
       return task;
     }
@@ -57,51 +72,26 @@ const App = () => {
     setTasks(newList);
   }
 
-
-  const toDoList = tasks.length ? tasks.map(task => {
-    if (task.status === true) {
-      return (
-        <table>
-          <tr>
-            <td>{task.id}</td>
-            <td>{task.date}</td>
-            <td>{task.body}</td>
-            <button onClick={() => handleTaskStatus(task.id)}>Done</button>
-          </tr>
-        </table>
-      )
-    } else {return null}
-  }) : null;
-
-  const finishedTasks = tasks.filter(task => task.status === false);
-
-  const finishedTasksList = finishedTasks.length ? finishedTasks.map(task => (
-    <table>
-      <tr>
-        <td>{task.id}</td>
-        <td>{task.date}</td>
-        <td>{task.body}</td>
-        <button onClick={() => handleDelete(task.id)}>Delete</button>
-      </tr>
-    </table>
-  )) : null;
-
-
   return (
-    <>
+    <div className="app">
       <Input
         onChange={handleInputChange}
         onSubmit={handleInputSubmit}
         taskValue={taskBody}
-        dateValue={taskDate}
+        dateValue={actualDate}
+        rangeDate={rangeDate}
       />
-      {toDoList}
-      <p>-----------------------</p>
-      {finishedTasksList}
-
-    </>
+      <ToDoList
+        tasks={tasks}
+        click={(id) => handleTaskStatus(id)}
+      />
+      <FinishedTasksList
+        actualDate={actualDate}
+        tasks={tasks}
+        click={(id) => handleDelete(id)}
+      />
+    </div>
   )
-
 }
 
 export default App;
