@@ -1,9 +1,10 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
+import { AppContext } from './AppContext';
 import Task from './Task';
 
 
-const ToDoList = ({ tasks, click }) => {
+const ToDoList = () => {
+    const { tasks } = useContext(AppContext);
 
     const toDoList = tasks.length
         ? tasks.map(task => {
@@ -12,7 +13,6 @@ const ToDoList = ({ tasks, click }) => {
                     <tr key={task.id}>
                         <Task
                             task={task}
-                            click={(id) => click(id)}
                         />
                     </tr>
                 )
@@ -27,7 +27,7 @@ const ToDoList = ({ tasks, click }) => {
                 </caption>
                 <thead>
                     <tr>
-                        <th>data utworzenia</th>
+                        <th>termin wykonania</th>
                         <th>zadanie</th>
                         <th>usuń</th>
                     </tr>

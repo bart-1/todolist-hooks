@@ -5,6 +5,7 @@ import Input from './Input';
 import ToDoList from './ToDoList';
 
 import '../styles/App.css';
+import { AppContext } from './AppContext';
 
 const App = () => {
 
@@ -53,43 +54,36 @@ const App = () => {
     setTaskBody('');
   }
 
-  const handleTaskStatus = id => (
-    setTasks(tasks.map(task => {
-      if (task.id === id) {
-        task = {
-          id: task.id,
-          date: task.date,
-          body: task.body,
-          status: false
-        };
-      }
-      return task;
+  const click = (id, statusId) => {
+    if (statusId) {
+      setTasks(tasks.map(task => {
+        if (task.id === id) {
+          task = {
+            id: task.id,
+            date: task.date,
+            body: task.body,
+            status: false
+          };
+        }
+        return task;
+      }))
+    } else if (!statusId) {
+      const newList = tasks.filter(task => task.id !== id);
+      setTasks(newList);
     }
-    )))
-
-  const handleDelete = id => {
-    const newList = tasks.filter(task => task.id !== id);
-    setTasks(newList);
   }
 
   return (
     <div className="app">
-      <Input
-        onChange={handleInputChange}
-        onSubmit={handleInputSubmit}
-        taskValue={taskBody}
-        dateValue={actualDate}
-        rangeDate={rangeDate}
-      />
-      <ToDoList
-        tasks={tasks}
-        click={(id) => handleTaskStatus(id)}
-      />
-      <FinishedTasksList
-        actualDate={actualDate}
-        tasks={tasks}
-        click={(id) => handleDelete(id)}
-      />
+      <AppContext.Provider value={{ actualDate, rangeDate, tasks, click }}>
+        <Input
+          onChange={handleInputChange}
+          onSubmit={handleInputSubmit}
+          taskValue={taskBody}
+        />
+        <ToDoList />
+        <FinishedTasksList />
+      </AppContext.Provider>
     </div>
   )
 }

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "./AppContext";
 
 const Input = props => {
+    const { actualDate } = useContext(AppContext);
     return (
         <>
             <form onSubmit={props.onSubmit}>
@@ -21,9 +23,9 @@ const Input = props => {
                             type="datetime-local"
                             name="date"
                             onChange={props.onChange}
-                            value={props.dateValue}
+                            value={actualDate}
                             autoComplete="off"
-                            min={props.dateValue}
+                            min={actualDate}
                             max={props.rangeDate}
                         />
                     </label>

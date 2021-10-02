@@ -1,18 +1,16 @@
-import React from 'react';
-
+import React, {useContext} from 'react';
+import { AppContext } from './AppContext';
 import Task from './Task';
 
-const FinishedTasksList = ({ tasks, click, actualDate }) => {
-
+const FinishedTasksList = () => {
+    const { tasks } = useContext(AppContext);
     const finishedTasks = tasks.filter(task => task.status === false);
     
     const finishedTasksList = finishedTasks.length
         ? finishedTasks.map(task => (
             <tr key={task.id}>
                 <Task
-                    actualDate={actualDate}
                     task={task}
-                    click={(id) => click(id)}
                 />
             </tr>
         ))
@@ -26,8 +24,8 @@ const FinishedTasksList = ({ tasks, click, actualDate }) => {
                 </caption>
                 <thead>
                     <tr>
-                        <th>data utworzenia</th>
-                        <th>data zakończenia</th>
+                        <th>termin wykonania</th>
+                        <th>oznaczono jako zrobione:</th>
                         <th>zadanie</th>
                         <th>usuń</th>
                     </tr>
