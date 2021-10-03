@@ -23,10 +23,12 @@ const ToDoList = () => {
         : null;
     return (
         <>
-            <table id="to-do">
+            <table className="to-do">
                 <caption>
                     Zadania do zrobienia
                 </caption>
+            </table>
+            <table className="to-do">
                 <thead>
                     <tr>
                         <th>termin wykonania</th>

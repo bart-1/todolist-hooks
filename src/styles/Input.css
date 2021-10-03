@@ -15,6 +15,7 @@ input:hover {
 
 textarea {
     width: 96%;
+    height: 5vh;
     padding: 1vh 1vh 10vh;
     outline: none;
     border: none;

@@ -1,4 +1,8 @@
-table[id="done"],
-#done>caption {
+table[class="done"],
+.done>caption {
     filter: grayscale(1);
+}
+table[id="sticky-caption"] {
+    position: sticky;
+    bottom: 0;
 }
