@@ -6,7 +6,7 @@ import '../styles/Input.css';
 const Input = () => {
     const { actualDate, rangeDate, handleInputChange, handleInputSubmit, taskBody } = useContext(AppContext);
     const focusedInput = useRef(true);
-    
+
     useEffect(() => {
         focusedInput.current.focus();
     }, []);
