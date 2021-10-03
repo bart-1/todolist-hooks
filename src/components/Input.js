@@ -1,15 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { AppContext } from "./AppContext";
 
 import '../styles/Input.css';
 
 const Input = () => {
-    const { actualDate, rangeDate, handleInputChange,handleInputSubmit, taskBody } = useContext(AppContext);
+    const { actualDate, rangeDate, handleInputChange, handleInputSubmit, taskBody } = useContext(AppContext);
+    const focusedInput = useRef(true);
+    
+    useEffect(() => {
+        focusedInput.current.focus();
+    }, []);
+
+
     return (
         <>
             <form onSubmit={handleInputSubmit}>
                 <label htmlFor="task"><p>Do zrobienia:</p>
                     <textarea
+                        ref={focusedInput}
                         type="text"
                         name="task"
                         align="top"
