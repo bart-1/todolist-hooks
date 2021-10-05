@@ -1,12 +1,14 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-export const AppContext = createContext();
+// export const AppContext = createContext();
 
 const MainProvider = ({ children }) => {
     const [tasks, setTasks] = useState([]);
     const [actualDate, setActualDate] = useState('');
     const [rangeDate, setRangeDate] = useState('');
     const [taskBody, setTaskBody] = useState('');
+
+    const AppContext = useContext(true);
 
     useEffect(() => {
         function getDate(addYears) {
