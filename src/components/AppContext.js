@@ -1,14 +1,53 @@
-import { useContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useReducer, useState } from 'react';
 
 export const AppContext = createContext();
 
+
+
+
+const TasksReducer = (state, action) => {
+    switch (action.type) {
+        case 'ADD':
+            return [...state, action.newElement];
+        case 'DELETE':
+            return state.filter(element => element.id !== action.id);
+        case 'ERASE':
+            return state = '';
+        case 'INPUT':
+            return action.value;
+        case 'MODIFY':
+            return state.map(element => {
+                if (element.id === action.id) {
+                    return element = {
+                        id: element.id,
+                        date: element.date,
+                        body: element.body,
+                        status: false
+                    };
+                } else {
+                    return element;
+                }
+            });
+        case 'FETCH':
+            return action.data;
+        default:
+            throw new Error(`wrong type`);
+    }
+
+}
+
 const MainProvider = ({ children }) => {
-    const [tasks, setTasks] = useState([]);
+    // const [tasks, setTasks] = useState([]);
     const [actualDate, setActualDate] = useState('');
     const [rangeDate, setRangeDate] = useState('');
-    const [taskBody, setTaskBody] = useState('');
-    
-    const AppContext = useContext(true);
+
+    // const AppContext = useContext(true);
+
+    const [tasks, dispatchTasks] = useReducer(TasksReducer, []);
+    const [inputText, dispatchText] = useReducer(TasksReducer, []);
+    const [inputDate, dispatchDate] = useReducer(TasksReducer, []);
+
+
 
     useEffect(() => {
         function getDate(addYears) {
@@ -25,59 +64,46 @@ const MainProvider = ({ children }) => {
         setActualDate(getDate(0))
         setRangeDate(getDate(2))
 
-    }, [taskBody, tasks]);
+    }, [inputText, tasks]);
 
 
 
-    const handleInputChange = e => {
-        if (e.target.name === 'task') {
-            setTaskBody(e.target.value)
-        } else if (e.target.name === 'date') {
-            setActualDate(e.target.value)
-        }
-    }
+    // const handleInputChange = e => {
+    //     if (e.target.name === 'task') {
+    //         setTaskBody(e.target.value)
+    //     } else if (e.target.name === 'date') {
+    //         setActualDate(e.target.value)
+    //     }
+    // }
 
     const handleInputSubmit = e => {
         e.preventDefault();
-        setTasks(task => task.concat({
-            id: tasks.length + 1,
-            date: actualDate,
-            body: taskBody,
-            status: true
-        }))
+        dispatchTasks({
+            type: 'ADD', newElement: {
+                id: tasks.length + 1,
+                date: actualDate,
+                body: inputText,
+                status: true
+            }
+        })
         setActualDate('');
-        setTaskBody('');
-    }
-
-    const click = (id, statusId) => {
-        if (statusId) {
-            setTasks(tasks.map(task => {
-                if (task.id === id) {
-                    task = {
-                        id: task.id,
-                        date: actualDate,
-                        body: task.body,
-                        status: false
-                    };
-                }
-                return task;
-            }))
-        } else if (!statusId) {
-            const newList = tasks.filter(task => task.id !== id);
-            setTasks(newList);
-        }
+        dispatchText({ type: 'ERASE' });
     }
 
     return (
-        <AppContext.Provider value={{
-            actualDate,
-            rangeDate,
-            tasks,
-            click,
-            handleInputChange,
-            handleInputSubmit,
-            taskBody
-        }}>
+        <AppContext.Provider
+            value={{
+                actualDate,
+                dispatchDate,
+                dispatchTasks,
+                dispatchText,
+                inputDate,
+                inputText,
+                rangeDate,
+                tasks,
+                handleInputSubmit,
+            }}
+        >
             {children}
         </AppContext.Provider>
     )

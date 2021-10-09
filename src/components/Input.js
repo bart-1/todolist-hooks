@@ -4,7 +4,7 @@ import { AppContext } from "./AppContext";
 import '../styles/Input.css';
 
 const Input = () => {
-    const { actualDate, rangeDate, handleInputChange, handleInputSubmit, taskBody } = useContext(AppContext);
+    const { actualDate, inputDate, inputText, dispatchText, dispatchDate, rangeDate, handleInputChange, handleInputSubmit, taskBody } = useContext(AppContext);
     const focusedInput = useRef(true);
 
     useEffect(() => {
@@ -21,8 +21,8 @@ const Input = () => {
                         type="text"
                         name="task"
                         align="top"
-                        onChange={handleInputChange}
-                        value={taskBody}
+                        onChange={(e) => dispatchText({type: 'INPUT', value: e.target.value, name: e.target.name})}
+                        value={inputText}
                         autoComplete="off"
                         placeholder="wpisz tutaj..."
                     />
@@ -32,8 +32,8 @@ const Input = () => {
                         <input
                             type="datetime-local"
                             name="date"
-                            onChange={handleInputChange}
-                            value={actualDate}
+                            onChange={(e) => dispatchDate({ type: 'INPUT', value: e.target.value, name: e.target.name })}
+                            value={inputDate}
                             autoComplete="off"
                             min={actualDate}
                             max={rangeDate}
